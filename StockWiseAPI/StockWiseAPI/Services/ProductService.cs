@@ -16,13 +16,14 @@ namespace StockWiseAPI.Services
 
         public async Task<AddProductResponse> AddProductAsync(AddProductRequest request)
         {
+            DateTime now = DateTime.Now;
             var product = new Product
             {
                 ProductName = request.ProductName,
                 StockQuantity = request.StockQuantity,
                 UnitPrice = request.UnitPrice,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedAt = now,
+                UpdatedAt = now
             };
 
             await _productRepository.AddProductAsync(product);
@@ -36,6 +37,27 @@ namespace StockWiseAPI.Services
                 CreatedAt = product.CreatedAt,
                 UpdatedAt = product.UpdatedAt
             };
+        }
+
+        public async Task<IEnumerable<GetProductsResponse>> GetAllProductsAsync()
+        {
+            var products = await _productRepository.GetAllProductsAsync();
+
+            List<GetProductsResponse> productResponse = new List<GetProductsResponse>();
+            foreach (var product in products)
+            {
+                productResponse.Add(new GetProductsResponse
+                {
+                    ProductId= product.Id,
+                    ProductName = product.ProductName,
+                    StockQuantity = product.StockQuantity,
+                    UnitPrice = product.UnitPrice,
+                    CreatedAt = product.CreatedAt,
+                    UpdatedAt = product.UpdatedAt
+                });
+            }
+
+            return productResponse;
         }
     }
 }

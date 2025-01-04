@@ -29,5 +29,12 @@ namespace StockWiseAPI.Controllers
             var response = await _productService.AddProductAsync(request);
             return Ok(response);
         }
+
+        [Route("get")]
+        [HttpGet]
+        public async Task<IEnumerable<GetProductsResponse>> GetAllProducts()
+        {
+            return await _productService.GetAllProductsAsync();
+        }
     }
 }

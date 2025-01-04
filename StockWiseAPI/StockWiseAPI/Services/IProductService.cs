@@ -6,5 +6,6 @@ namespace StockWiseAPI.Services
     public interface IProductService
     {
         Task<AddProductResponse> AddProductAsync(AddProductRequest request);
+        Task<IEnumerable<GetProductsResponse>> GetAllProductsAsync();
     }
 }

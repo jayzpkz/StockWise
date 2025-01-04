@@ -22,25 +22,28 @@ namespace StockWiseAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);  // Return all validation errors
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, message = "Validation failed", errors });
             }
 
             var response = await _productService.AddProductAsync(request);
-            return Ok(response);
+            return Ok(new { success = true, product = response });
         }
 
         [Route("get")]
         [HttpGet]
-        public async Task<IEnumerable<GetProductResponse>> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts()
         {
-            return await _productService.GetAllProductsAsync();
+            var response = await _productService.GetAllProductsAsync();
+            return Ok(new { success = true, products = response });
         }
 
         [Route("get/{id}")]
         [HttpGet]
-        public async Task<GetProductResponse?> GetProductById(Guid id)
+        public async Task<IActionResult> GetProductById(Guid id)
         {
-            return await _productService.GetProductByIdAsync(id);
+            var response = await _productService.GetProductByIdAsync(id);
+            return Ok(new { success = true, product = response });
         }
 
         [Route("{id}")]
@@ -49,11 +52,12 @@ namespace StockWiseAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                return BadRequest(new { success = false, message = "Validation failed", errors });
             }
 
             var response = await _productService.UpdateProductAsync(id, request);
-            return Ok(response);
+            return Ok(new { success = true, product = response });
         }
     }
 }

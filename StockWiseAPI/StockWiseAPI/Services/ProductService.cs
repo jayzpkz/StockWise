@@ -101,5 +101,10 @@ namespace StockWiseAPI.Services
                 UpdatedAt = product.UpdatedAt
             };
         }
+
+        public async Task DeleteProductAsync(Guid id)
+        {
+            await _productRepository.DeleteProductAsync(id);
+        }
     }
 }

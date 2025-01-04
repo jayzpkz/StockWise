@@ -1,6 +1,6 @@
 ﻿namespace StockWiseAPI.DTOs.Responses
 {
-    public class GetProductsResponse
+    public class GetProductResponse
     {
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }

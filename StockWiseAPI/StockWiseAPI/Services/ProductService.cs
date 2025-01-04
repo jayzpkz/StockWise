@@ -39,14 +39,14 @@ namespace StockWiseAPI.Services
             };
         }
 
-        public async Task<IEnumerable<GetProductsResponse>> GetAllProductsAsync()
+        public async Task<IEnumerable<GetProductResponse>> GetAllProductsAsync()
         {
             var products = await _productRepository.GetAllProductsAsync();
 
-            List<GetProductsResponse> productResponse = new List<GetProductsResponse>();
+            List<GetProductResponse> productResponse = new List<GetProductResponse>();
             foreach (var product in products)
             {
-                productResponse.Add(new GetProductsResponse
+                productResponse.Add(new GetProductResponse
                 {
                     ProductId= product.Id,
                     ProductName = product.ProductName,
@@ -58,6 +58,48 @@ namespace StockWiseAPI.Services
             }
 
             return productResponse;
+        }
+
+        public async Task<GetProductResponse?> GetProductByIdAsync(Guid id)
+        {
+            var product = await _productRepository.GetProductByIdAsync(id);
+
+            if (product == null) return null;
+
+            return new GetProductResponse
+            {
+                ProductId = product.Id,
+                ProductName = product.ProductName,
+                StockQuantity = product.StockQuantity,
+                UnitPrice = product.UnitPrice,
+                CreatedAt = product.CreatedAt,
+                UpdatedAt = product.UpdatedAt
+            };
+        }
+
+        public async Task<UpdateProductResponse?> UpdateProductAsync(Guid id, UpdateProductRequest request)
+        {
+            var product = await _productRepository.GetProductByIdAsync(id);
+
+            if (product == null) return null;
+
+            DateTime now = DateTime.Now;
+            product.ProductName = request.ProductName;
+            product.StockQuantity = request.StockQuantity;
+            product.UnitPrice = request.UnitPrice;
+            product.UpdatedAt = now;
+
+            await _productRepository.UpdateProductAsync(product);
+
+            return new UpdateProductResponse
+            {
+                ProductId = product.Id,
+                ProductName = product.ProductName,
+                StockQuantity = product.StockQuantity,
+                UnitPrice = product.UnitPrice,
+                CreatedAt = product.CreatedAt,
+                UpdatedAt = product.UpdatedAt
+            };
         }
     }
 }

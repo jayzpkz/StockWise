@@ -18,6 +18,14 @@ namespace StockWiseAPI.Repositories
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
         }
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
+        }
+        public async Task<Product?> GetProductByIdAsync(Guid id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
         public async Task UpdateProductAsync(Product product)
         {
             _context.Products.Update(product);
@@ -31,10 +39,6 @@ namespace StockWiseAPI.Repositories
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
-        }
-        public async Task<IEnumerable<Product>> GetAllProductsAsync()
-        {
-            return await _context.Products.ToListAsync();
         }
     }
 }

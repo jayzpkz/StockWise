@@ -25,16 +25,35 @@ namespace StockWiseAPI.Controllers
                 return BadRequest(ModelState);  // Return all validation errors
             }
 
-            // here i`ll add function that will send this data to sql server.
             var response = await _productService.AddProductAsync(request);
             return Ok(response);
         }
 
         [Route("get")]
         [HttpGet]
-        public async Task<IEnumerable<GetProductsResponse>> GetAllProducts()
+        public async Task<IEnumerable<GetProductResponse>> GetAllProducts()
         {
             return await _productService.GetAllProductsAsync();
+        }
+
+        [Route("get/{id}")]
+        [HttpGet]
+        public async Task<GetProductResponse?> GetProductById(Guid id)
+        {
+            return await _productService.GetProductByIdAsync(id);
+        }
+
+        [Route("{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = await _productService.UpdateProductAsync(id, request);
+            return Ok(response);
         }
     }
 }

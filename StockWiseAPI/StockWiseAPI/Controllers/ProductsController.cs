@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockWiseAPI.DTOs.Requests;
 using StockWiseAPI.DTOs.Responses;
+using StockWiseAPI.Services;
 
 namespace StockWiseAPI.Controllers
 {
@@ -8,9 +9,16 @@ namespace StockWiseAPI.Controllers
     [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService;
+        }
+
         [Route("add")]
         [HttpPost]
-        public IActionResult AddProduct([FromBody] AddProductRequest request)
+        public async Task<IActionResult> AddProduct([FromBody] AddProductRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -18,16 +26,8 @@ namespace StockWiseAPI.Controllers
             }
 
             // here i`ll add function that will send this data to sql server.
-
-            return Ok(new AddProductResponse
-            {
-                ProductId = "123456",
-                ProductName = request.ProductName,
-                StockQuantity = request.StockQuantity,
-                UnitPrice = request.UnitPrice,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-            });
+            var response = await _productService.AddProductAsync(request);
+            return Ok(response);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿namespace StockWiseAPI.DTOs.Responses
+﻿namespace StockWiseAPI.Models
 {
-    public class AddProductResponse
+    public class Product
     {
-        public Guid ProductId { get; set; }
+        public Guid Id { get; set; }
         public string ProductName { get; set; }
         public int StockQuantity { get; set; }
         public decimal UnitPrice { get; set; }

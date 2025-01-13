@@ -1,0 +1,62 @@
+:root {
+  /* Base Colors */
+  --font-primary: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --color-light: #ffffff;
+  --color-dark: #242424;
+  --color-text-light: #213547;
+  --color-text-dark: rgba(255, 255, 255, 0.87);
+  --color-link: #646cff;
+  --color-link-hover-dark: #535bf2;
+  --color-link-hover-light: #747bff;
+
+  /* Button Colors */
+  --color-button-bg-dark: #1a1a1a;
+  --color-button-bg-light: #f9f9f9;
+  --color-button-border-hover: #646cff;
+
+  /* Misc */
+  --color-outline: -webkit-focus-ring-color;
+
+  /* Transition Durations */
+  --transition-duration: 0.25s;
+}
+
+/* Light Mode Overrides */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg: var(--color-light);
+    --color-text: var(--color-text-light);
+    --color-link-hover: var(--color-link-hover-light);
+    --color-button-bg: var(--color-button-bg-light);
+  }
+}
+
+/* Dark Mode Defaults */
+:root {
+  --color-bg: var(--color-dark);
+  --color-text: var(--color-text-dark);
+  --color-link-hover: var(--color-link-hover-dark);
+  --color-button-bg: var(--color-button-bg-dark);
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+a {
+  color: var(--color-link);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+button {
+  background-color: var(--color-button-bg);
+  transition: border-color var(--transition-duration);
+}
+
+button:hover {
+  border-color: var(--color-button-border-hover);
+}
